@@ -4,6 +4,10 @@ module.exports = {
   content: ["./*.{html,js}"],
   theme: {
     extend: {
+      backgroundImage: {
+        "custom-gradient":
+          "linear-gradient(to bottom, #ECF15E 10%, #000000 100%)",
+      },
       colors: {
         brandprimary: "#ECF15E",
         brandsecondary: "#D6DD13",
