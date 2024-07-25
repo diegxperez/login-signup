@@ -15,6 +15,32 @@
   <body
     class="grid place-items-center bg-gradient-to-b from-neutral-900 to-blacksoft"
   >
+    <nav
+      class="absolute right-0 top-0 flex list-none gap-x-4 pr-3 pt-3 text-white"
+    >
+      <li>
+        <a
+          href=""
+          class="hover:text-neutral-400 hover:underline hover:underline-offset-1"
+          >Login</a
+        >
+      </li>
+      <li>
+        <a
+          href=""
+          class="hover:text-neutral-400 hover:underline hover:underline-offset-1"
+          >Sign Up</a
+        >
+      </li>
+      <li>
+        <a
+          href=""
+          class="hover:text-neutral-400 hover:underline hover:underline-offset-1"
+          >Panel</a
+        >
+      </li>
+    </nav>
+
     <!-- <div
       class="absolute top-0 z-0 h-[300px] w-[300px] -translate-y-1/2 rounded-full bg-gradient-to-b from-brandprimary to-blacksoft blur-[90px]"
     ></div> -->
@@ -28,12 +54,14 @@
         </p>
       </div>
 
-      <form class="flex flex-col gap-y-5">
+      <form id="sign-form" class="flex flex-col gap-y-5">
         <!-- Wrapper First Name & Last Name -->
         <div class="flex w-full gap-x-3">
           <!-- Input First Name -->
           <div class="flex w-1/2 flex-col">
-            <label for="first_name" class="mb-2 font-normal">First Name</label>
+            <label for="first-name-signup" class="mb-2 font-normal"
+              >First Name</label
+            >
 
             <div
               class="flex items-center gap-x-2 rounded-lg bg-neutral-900 px-3 py-3"
@@ -55,16 +83,19 @@
                 />
               </svg>
               <input
-                id="first_name"
-                class="h-5 w-full appearance-none bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
+                id="first-name-signup"
+                class="h-5 w-full bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
                 type="text"
                 placeholder="First Name"
+                name="firstname"
               />
             </div>
           </div>
           <!-- Input Last Name -->
           <div class="flex w-1/2 flex-col">
-            <label for="last_name" class="mb-2 font-normal">Last Name</label>
+            <label for="last-name-signup" class="mb-2 font-normal"
+              >Last Name</label
+            >
 
             <div
               class="flex items-center gap-x-2 rounded-lg bg-neutral-900 px-3 py-3"
@@ -87,18 +118,19 @@
               </svg>
 
               <input
-                id="last_name"
+                id="last-name-signup"
                 class="h-5 w-full appearance-none bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
                 type="text"
                 placeholder="Last Name"
+                name="lastname"
               />
             </div>
           </div>
-          <!--  -->
         </div>
+        <!--  -->
         <!-- Input Email-->
         <div class="flex flex-col">
-          <label for="input-email" class="mb-2 font-normal">Email</label>
+          <label for="email-signup" class="mb-2 font-normal">Email</label>
 
           <div
             class="flex items-center gap-x-2 rounded-lg bg-neutral-900 px-3 py-3"
@@ -120,17 +152,18 @@
               />
             </svg>
             <input
-              id="input-email"
+              id="email-signup"
               class="h-5 w-full flex-1 appearance-none bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
               type="email"
               placeholder="Email"
+              name="email"
             />
           </div>
         </div>
         <!--  -->
         <!-- Input Password-->
-        <div class="mb-6 flex flex-col">
-          <label for="input-password" class="mb-2 font-normal">Password</label>
+        <div id="container-password" class="mb-6 flex flex-col">
+          <label for="password-signup" class="mb-2 font-normal">Password</label>
 
           <div
             class="mb-2 flex items-center gap-x-2 rounded-lg bg-neutral-900 px-3 py-3"
@@ -152,10 +185,11 @@
               />
             </svg>
             <input
-              id="input-password"
+              id="password-signup"
               class="h-5 w-full flex-1 appearance-none bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
               type="password"
               placeholder="Password"
+              name="password"
             />
             <!-- Show Password -->
             <button id="tooglePassword" type="button">
@@ -204,15 +238,18 @@
               </svg>
             </button>
           </div>
-          <p class="text-xs font-light opacity-60">
+          <!-- <p class="text-xs font-light opacity-60">
             Minimum length is 8 characters.
-          </p>
+          </p> -->
         </div>
         <!--  -->
       </form>
       <div>
         <button
           class="mb-6 w-full rounded-lg bg-gradient-to-b from-brandprimary to-brandsecondary py-3 font-medium text-blacksoft"
+          type="submit"
+          value="enviar"
+          id="btn-submit-signup"
         >
           Sign Up
         </button>
