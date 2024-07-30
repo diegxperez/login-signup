@@ -79,14 +79,20 @@ inputPassword.addEventListener("input", (e) =>
 btnSubmitSignUp.addEventListener("click", (e) => {
   e.preventDefault();
 
+  const firstname = inputFirstName.value.trim();
+  const lastname = inputLastName.value.trim();
+  const email = inputEmail.value.trim();
+  const password = inputPassword.value;
+
   if (validateForm()) {
-    console.log("registrado con exito");
+    localStorage.setItem(
+      "register",
+      JSON.stringify({ firstname, lastname, email, password }),
+    );
+    console.log("Form submitted and saved to Local Storage.");
+  } else {
+    console.log("Form validation failed.");
   }
-  // const firstname = inputFirstName.value.trim();
-  // const lastname = inputLastName.value.trim();
-  // const email = inputEmail.value.trim();
-  // const password = inputPassword.value;
-  // console.log(firstname);
 });
 
 const validateForm = () => {
