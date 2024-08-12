@@ -1,17 +1,21 @@
+// Utility
+const $ = (el) => document.querySelector(el);
+
 // TooglePassword
-const showPassword = document.getElementById("show-password");
-const hidePassword = document.getElementById("hide-password");
-const tooglePassword = document.getElementById("tooglePassword");
+const showPassword = $("#show-password");
+const hidePassword = $("#hide-password");
+const tooglePassword = $("#tooglePassword");
 
 // Form
-const signUpForm = document.getElementById("sign-form");
-const inputFirstName = document.getElementById("first-name-signup");
-const inputLastName = document.getElementById("last-name-signup");
-const inputEmail = document.getElementById("email-signup");
-const inputPassword = document.getElementById("password-signup");
-const btnSubmitSignUp = document.getElementById("btn-submit-signup");
+const signUpForm = $("#sign-form");
+const inputFirstName = $("#first-name-signup");
+const inputLastName = $("#last-name-signup");
+const inputEmail = $("#email-signup");
+const inputPassword = $("#password-signup");
+const btnSubmitSignUp = $("#btn-submit-signup");
+
 // Container Password
-const containerPassword = document.getElementById("container-password");
+const containerPassword = $("#container-password");
 
 const validateTooglePassword = () => {
   if (inputPassword.getAttribute("type") === "password") {
@@ -33,20 +37,6 @@ const validateTooglePassword = () => {
 };
 
 tooglePassword.addEventListener("click", validateTooglePassword);
-
-// const validateEmptyField = (e) => {
-//   const field = e.target;
-//   const fieldValue = e.target.value;
-
-//   const parentField = field.parentElement;
-
-//   if (fieldValue.trim().length === 0) {
-//     parentField.classList.add("outline", "outline-1", "outline-red-600");
-//     console.log(parentField);
-//   } else {
-//     parentField.classList.remove("outline", "outline-1", "outline-red-600");
-//   }
-// };
 
 const regexEmail = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
 const regexPassword = new RegExp(
@@ -79,19 +69,23 @@ inputPassword.addEventListener("input", (e) =>
 btnSubmitSignUp.addEventListener("click", (e) => {
   e.preventDefault();
 
-  const firstname = inputFirstName.value.trim();
-  const lastname = inputLastName.value.trim();
-  const email = inputEmail.value.trim();
-  const password = inputPassword.value;
-
   if (validateForm()) {
-    localStorage.setItem(
-      "register",
-      JSON.stringify({ firstname, lastname, email, password }),
-    );
-    console.log("Form submitted and saved to Local Storage.");
+    const firstname = inputFirstName.value;
+    const lastname = inputLastName.value;
+    const email = inputEmail.value;
+    const password = inputPassword.value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    if (users.find((item) => item.email == email)) {
+      return alert("User is already registered");
+    }
+    users.push({ firstname, lastname, email, password });
+
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("Successful registration");
+    // Redirrecionar a /login
   } else {
-    console.log("Form validation failed.");
+    alert("Registration invalid");
   }
 });
 
