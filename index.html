@@ -41,96 +41,15 @@
       </li>
     </nav>
 
-    <!-- <div
-      class="absolute top-0 z-0 h-[300px] w-[300px] -translate-y-1/2 rounded-full bg-gradient-to-b from-brandprimary to-blacksoft blur-[90px]"
-    ></div> -->
-    <main
-      class="z-10 w-[23.4375rem] rounded-xl bg-blacksoft/40 p-2.5 text-white"
-    >
+    <main class="w-[23.4375rem] rounded-xl bg-blacksoft/40 p-2.5 text-white">
       <div class="my-5">
-        <p class="mb-2 text-xl font-semibold">Create an account</p>
-        <p class="text-xs opacity-60">
-          Welcome back! Please enter your details
-        </p>
+        <p class="mb-1 text-xl font-semibold">Sign in</p>
+        <p class="text-xs opacity-60">Enter your email and password</p>
       </div>
 
-      <form id="sign-form" class="flex flex-col gap-y-5">
-        <!-- Wrapper First Name & Last Name -->
-        <div class="flex w-full gap-x-3">
-          <!-- Input First Name -->
-          <div class="flex w-1/2 flex-col">
-            <label for="first-name-signup" class="mb-2 font-normal"
-              >First Name</label
-            >
-
-            <div
-              class="flex items-center gap-x-2 rounded-lg bg-neutral-900 px-3 py-3"
-            >
-              <svg
-                class="h-4 w-4 text-white"
-                width="100%"
-                height="100%"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19 21L16 18M16 18L19 15M16 18H22M12 15.5H7.5C6.10444 15.5 5.40665 15.5 4.83886 15.6722C3.56045 16.06 2.56004 17.0605 2.17224 18.3389C2 18.9067 2 19.6044 2 21M14.5 7.5C14.5 9.98528 12.4853 12 10 12C7.51472 12 5.5 9.98528 5.5 7.5C5.5 5.01472 7.51472 3 10 3C12.4853 3 14.5 5.01472 14.5 7.5Z"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <input
-                id="first-name-signup"
-                class="h-5 w-full bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
-                type="text"
-                placeholder="First Name"
-                name="firstname"
-              />
-            </div>
-          </div>
-          <!-- Input Last Name -->
-          <div class="flex w-1/2 flex-col">
-            <label for="last-name-signup" class="mb-2 font-normal"
-              >Last Name</label
-            >
-
-            <div
-              class="flex items-center gap-x-2 rounded-lg bg-neutral-900 px-3 py-3"
-            >
-              <svg
-                class="h-4 w-4 text-white"
-                width="100%"
-                height="100%"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19 9L22 6M22 6L19 3M22 6L16 6M16 21V19.8C16 18.1198 16 17.2798 15.673 16.638C15.3854 16.0735 14.9265 15.6146 14.362 15.327C13.7202 15 12.8802 15 11.2 15H6.8C5.11984 15 4.27976 15 3.63803 15.327C3.07354 15.6146 2.6146 16.0735 2.32698 16.638C2 17.2798 2 18.1198 2 19.8V21M12.5 7.5C12.5 9.433 10.933 11 9 11C7.067 11 5.5 9.433 5.5 7.5C5.5 5.567 7.067 4 9 4C10.933 4 12.5 5.567 12.5 7.5Z"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-
-              <input
-                id="last-name-signup"
-                class="h-5 w-full appearance-none bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
-                type="text"
-                placeholder="Last Name"
-                name="lastname"
-              />
-            </div>
-          </div>
-        </div>
-        <!--  -->
-        <!-- Input Email-->
+      <form class="flex flex-col gap-y-4">
         <div class="flex flex-col">
-          <label for="email-signup" class="mb-2 font-normal">Email</label>
+          <label for="email-signin" class="mb-2 font-normal">Email</label>
 
           <div
             class="flex items-center gap-x-2 rounded-lg bg-neutral-900 px-3 py-3"
@@ -152,7 +71,7 @@
               />
             </svg>
             <input
-              id="email-signup"
+              id="email-signin"
               class="h-5 w-full flex-1 appearance-none bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
               type="email"
               placeholder="Email"
@@ -160,10 +79,9 @@
             />
           </div>
         </div>
-        <!--  -->
-        <!-- Input Password-->
+
         <div id="container-password" class="mb-6 flex flex-col">
-          <label for="password-signup" class="mb-2 font-normal">Password</label>
+          <label for="password-signin" class="mb-2 font-normal">Password</label>
 
           <div
             class="mb-2 flex items-center gap-x-2 rounded-lg bg-neutral-900 px-3 py-3"
@@ -185,16 +103,15 @@
               />
             </svg>
             <input
-              id="password-signup"
+              id="password-signin"
               class="h-5 w-full flex-1 appearance-none bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
               type="password"
               placeholder="Password"
               name="password"
             />
-            <!-- Show Password -->
-            <button id="tooglePassword" type="button">
+            <button id="tooglePasswordSign" type="button">
               <svg
-                id="hide-password"
+                id="hide-passwordSign"
                 class="h-4 w-4 text-white"
                 width="100%"
                 height="100%"
@@ -218,9 +135,8 @@
                 />
               </svg>
 
-              <!-- Hide Password -->
               <svg
-                id="show-password"
+                id="show-passwordSign"
                 class="hidden h-4 w-4 text-white"
                 width="100%"
                 height="100%"
@@ -238,35 +154,17 @@
               </svg>
             </button>
           </div>
-          <!-- <p class="text-xs font-light opacity-60">
-            Minimum length is 8 characters.<br />At least one uppercase
-            letter<br />
-            At least one lowercase letter<br />
-            At least one digit<br />
-            No white spaces<br />
-            At least one special character
-          </p> -->
         </div>
-        <!--  -->
       </form>
       <div>
         <button
           class="mb-6 w-full rounded-lg bg-gradient-to-b from-brandprimary to-brandsecondary py-3 font-medium text-blacksoft"
           type="submit"
           value="enviar"
-          id="btn-submit-signup"
+          id="btn-submit-signin"
         >
-          Sign Up
+          Log out
         </button>
-      </div>
-      <div>
-        <p class="text-sm font-light text-[#8996A9]">
-          By creating an account, you agree to the
-          <a href="#" class="border-b border-white text-white"
-            >Terms of Service.</a
-          >
-          We'll occasionally send you account-related emails.
-        </p>
       </div>
     </main>
     <script src="script.js"></script>
