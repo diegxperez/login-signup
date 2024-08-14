@@ -1,6 +1,8 @@
+// Index
+const root = document.getElementById("root");
+
 // UI
-const signUpUI = `
-<div class="my-5">
+const signUpUI = `<div class="my-5">
         <p class="mb-2 text-xl font-semibold">Create an account</p>
         <p class="text-xs opacity-60">
           Welcome back! Please enter your details
@@ -325,8 +327,52 @@ const signInUI = `<div class="my-5">
 >
   Log in
 </button>
-</div>
-`;
+</div>`;
+const panelUI = `<div class="my-5">
+<p class="mb-1 text-xl font-semibold">Welcome</p>
+<p id="user-login" class="mb-1 text-xl font-semibold">User</p>
+<button
+  class="mb-6 w-full rounded-lg bg-gradient-to-b from-brandprimary to-brandsecondary py-3 font-medium text-blacksoft"
+  type="submit"
+  value="enviar"
+  id="btn-logout"
+>
+  Log out
+</button>
+</div>`;
+
+root.innerHTML = signUpUI;
+
+// Event Popstate
+window.addEventListener("popstate", () => {
+  if (window.location.pathname === "/") {
+    root.innerHTML = signUpUI;
+  }
+
+  if (window.location.pathname === "/signin") {
+    root.innerHTML = signInUI;
+  }
+
+  if (window.location.pathname === "/panelui") {
+    root.innerHTML = panelUI;
+  }
+});
+
+function navigateTo(url) {
+  window.history.pushState(null, null, url);
+
+  switch (window.location.pathname) {
+    case "/":
+      root.innerHTML = signUpUI;
+      break;
+    case "/signin":
+      root.innerHTML = signInUI;
+      break;
+    case "/panelui":
+      root.innerHTML = panelUI;
+      break;
+  }
+}
 
 // Utility
 const $ = (el) => document.querySelector(el);
@@ -341,16 +387,20 @@ const regexName = new RegExp(
 );
 
 // SignUp Elements
-const inputFirstName = $("#first-name-signup");
-const inputLastName = $("#last-name-signup");
-const inputEmail = $("#email-signup");
+// const inputFirstName = $("#first-name-signup");
+// const inputLastName = $("#last-name-signup");
+// const inputEmail = $("#email-signup");
 const inputPassword = $("#password-signup");
-const btnSubmitSignUp = $("#btn-submit-signup");
+// const btnSubmitSignUp = $("#btn-submit-signup");
 
 // SignIn Elements
 const inputEmailSignIn = $("#email-signin");
 const inputPasswordSignin = $("#password-signin");
-const btnSubmitSignIn = $("#btn-submit-signin");
+// const btnSubmitSignIn = $("#btn-submit-signin");
+
+// Panel
+const btnLogOut = $("#btn-logout");
+const userLogin = $("#user-login");
 
 // togglePassword - SignUp
 const showPassword = $("#show-password");
@@ -362,38 +412,149 @@ const showPasswordSign = $("#show-passwordSign");
 const hidePasswordSign = $("#hide-passwordSign");
 const togglePasswordSign = $("#togglePasswordSign");
 
-const validatetogglePassword = (elementPassword, show, hide) => {
-  if (elementPassword.getAttribute("type") === "password") {
-    elementPassword.setAttribute("type", "text");
+const validateTogglePassword = (input, show, hide) => {
+  if (input.getAttribute("type") === "password") {
+    input.setAttribute("type", "text");
   } else {
-    elementPassword.setAttribute("type", "password");
+    input.setAttribute("type", "password");
   }
 
-  toggleVisibility(show);
-  toggleVisibility(hide);
-
-  function toggleVisibility(element) {
+  toogleVisibility(show);
+  toogleVisibility(hide);
+  function toogleVisibility(element) {
     if (element.classList.contains("hidden")) {
-      showElement.classList.replace("hidden", "block");
-      hideElement.classList.replace("block", "hidden");
+      element.classList.replace("hidden", "block");
     } else {
-      showElement.classList.replace("block", "hidden");
-      hideElement.classList.replace("hidden", "block");
+      element.classList.add("hidden");
     }
   }
 };
 
-document.addEventListener("click", (e) => {
-  if (e.target.matches("#togglePasswordSign")) {
-    validatetogglePassword(
+if (togglePassword) {
+  togglePassword.addEventListener("click", () => {
+    validateTogglePassword(inputPassword, showPassword, hidePassword);
+  });
+}
+
+if (togglePasswordSign) {
+  togglePasswordSign.addEventListener("click", () => {
+    validateTogglePassword(
       inputPasswordSignin,
       showPasswordSign,
       hidePasswordSign,
     );
+  });
+}
+
+const validateForm = () => {
+  let isValid = true;
+
+  const fields = [
+    $("#first-name-signup"),
+    $("#last-name-signup"),
+    $("#email-signup"),
+    $("#password-signup"),
+  ];
+
+  fields.forEach((field) => {
+    const fieldValue = field.value.trim();
+    const parentField = field.parentElement;
+
+    if (fieldValue.length === 0) {
+      parentField.classList.add("outline", "outline-1", "outline-red-600");
+      isValid = false;
+    } else {
+      parentField.classList.remove("outline", "outline-1", "outline-red-600");
+    }
+
+    if (field === fields[0] && !regexName.test(fieldValue)) {
+      parentField.classList.add("outline", "outline-1", "outline-red-600");
+      isValid = false;
+    }
+
+    if (field === fields[1] && !regexName.test(fieldValue)) {
+      parentField.classList.add("outline", "outline-1", "outline-red-600");
+      isValid = false;
+    }
+
+    if (field === fields[2] && !regexEmail.test(fieldValue)) {
+      parentField.classList.add("outline", "outline-1", "outline-red-600");
+      isValid = false;
+    }
+
+    if (field === fields[3] && !regexPassword.test(fieldValue)) {
+      parentField.classList.add("outline", "outline-1", "outline-red-600");
+      isValid = false;
+    }
+  });
+
+  return isValid;
+};
+
+const sendForm = (e) => {
+  console.log("todogood");
+  e.preventDefault();
+
+  if (validateForm()) {
+    const firstname = $("#first-name-signup").value;
+    const lastname = $("#last-name-signup").value;
+    const email = $("#email-signup").value;
+    const password = $("#password-signup").value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    if (users.find((item) => item.email == email)) {
+      return alert("User is already registered");
+    }
+    users.push({ firstname, lastname, email, password });
+
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("Successful registration");
+    // Redirrecionar a /login
+  } else {
+    alert("Registration invalid");
+  }
+};
+
+const signin = (e) => {
+  console.log("sign todo good");
+  e.preventDefault();
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  try {
+    let validUser = users.find(
+      (user) =>
+        user.email === inputEmailSignIn.value &&
+        user.password === inputPasswordSignin.value,
+    );
+  } catch {
+    alert("userinvalid");
   }
 
-  if (e.target.matches("#togglePassword")) {
-    validateTooglePassword(inputPassword, showPassword, hidePassword);
+  if (!validUser) {
+    return alert("User invalid");
+  }
+
+  let login = JSON.parse(localStorage.getItem("login")) || [];
+  login.push(validUser);
+  localStorage.setItem("login", JSON.stringify(login));
+  alert(`Welcome ${validUser.firstname}`);
+};
+
+document.addEventListener("click", (e) => {
+  let target = e.target;
+  console.log(target);
+
+  if (target.matches("#btn-submit-signup")) {
+    sendForm(e);
+  }
+
+  if (target.matches("#btn-submit-signin")) {
+    signin(e);
+  }
+
+  if (target.tagName === "A") {
+    e.preventDefault();
+    const href = target.getAttribute("href");
+    navigateTo(href);
   }
 });
 
@@ -410,94 +571,30 @@ const validateFormat = (regex, e) => {
   }
 };
 
-if (inputFirstName) {
-  inputFirstName.addEventListener("input", (e) => validateFormat(regexName, e));
-  inputLastName.addEventListener("input", (e) => validateFormat(regexName, e));
-  inputEmail.addEventListener("input", (e) => validateFormat(regexEmail, e));
-  inputPassword.addEventListener("input", (e) =>
-    validateFormat(regexPassword, e),
-  );
+document.addEventListener("input", (e) => {
+  const target = e.target;
 
-  btnSubmitSignUp.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    if (validateForm()) {
-      const firstname = inputFirstName.value;
-      const lastname = inputLastName.value;
-      const email = inputEmail.value;
-      const password = inputPassword.value;
-
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      if (users.find((item) => item.email == email)) {
-        return alert("User is already registered");
-      }
-      users.push({ firstname, lastname, email, password });
-
-      localStorage.setItem("users", JSON.stringify(users));
-      alert("Successful registration");
-      // Redirrecionar a /login
-    } else {
-      alert("Registration invalid");
-    }
-  });
-}
-
-const validateForm = () => {
-  let isValid = true;
-
-  const fields = [inputFirstName, inputLastName, inputEmail, inputPassword];
-
-  fields.forEach((field) => {
-    const fieldValue = field.value.trim();
-    const parentField = field.parentElement;
-
-    if (fieldValue.length === 0) {
-      parentField.classList.add("outline", "outline-1", "outline-red-600");
-      isValid = false;
-    } else {
-      parentField.classList.remove("outline", "outline-1", "outline-red-600");
-    }
-
-    if (field === inputFirstName && !regexName.test(fieldValue)) {
-      parentField.classList.add("outline", "outline-1", "outline-red-600");
-      isValid = false;
-    }
-
-    if (field === inputLastName && !regexName.test(fieldValue)) {
-      parentField.classList.add("outline", "outline-1", "outline-red-600");
-      isValid = false;
-    }
-
-    if (field === inputEmail && !regexEmail.test(fieldValue)) {
-      parentField.classList.add("outline", "outline-1", "outline-red-600");
-      isValid = false;
-    }
-
-    if (field === inputPassword && !regexPassword.test(fieldValue)) {
-      parentField.classList.add("outline", "outline-1", "outline-red-600");
-      isValid = false;
-    }
-  });
-
-  return isValid;
-};
-
-// Sign In
-btnSubmitSignIn.addEventListener("click", (e) => {
-  e.preventDefault();
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  let validUser = users.find(
-    (user) =>
-      user.email === inputEmailSignIn.value &&
-      user.password === inputPasswordSignin.value,
-  );
-
-  if (!validUser) {
-    return alert("User invalid");
+  if (target.matches("#first-name-signup")) {
+    validateFormat(regexName, e);
+  } else if (target.matches("#last-name-signup")) {
+    validateFormat(regexName, e);
+  } else if (target.matches("#email-signup")) {
+    validateFormat(regexEmail, e);
+  } else if (target.matches("#password-signup")) {
+    validateFormat(regexPassword, e);
   }
-
-  let login = JSON.parse(localStorage.getItem("login")) || [];
-  login.push(validUser);
-  localStorage.setItem("login", JSON.stringify(login));
-  alert(`Welcome ${validUser.firstname}`);
 });
+
+// document.addEventListener("click", (e) => {
+//   if (e.target.tagName === "A") {
+//     e.preventDefault();
+//     const href = e.target.getAttribute("href");
+//     navigateTo(href);
+//   }
+// });
+
+// let login = JSON.parse(localStorage.getItem("login"));
+// console.log(login);
+// if (login.length > 0) {
+//   userLogin.textContent = login[0].firstname;
+// }
