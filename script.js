@@ -271,7 +271,7 @@ const signInUI = `<div class="my-5">
       placeholder="Password"
       name="password"
     />
-    <button id="tooglePasswordSign" type="button">
+    <button id="togglePasswordSign" type="button">
       <svg
         id="hide-passwordSign"
         class="h-4 w-4 text-white"
@@ -367,9 +367,12 @@ function navigateTo(url) {
       break;
     case "/signin":
       root.innerHTML = signInUI;
+      hidrateTogglePassword();
+      cancelReLogin();
       break;
     case "/panelui":
       root.innerHTML = panelUI;
+      hidrateLogin();
       break;
   }
 }
@@ -386,31 +389,9 @@ const regexName = new RegExp(
   /^([A-Za-zÑñÁáÉéÍíÓóÚú]+['\-]{0,1}[A-Za-zÑñÁáÉéÍíÓóÚú]+)(\s+([A-Za-zÑñÁáÉéÍíÓóÚú]+['\-]{0,1}[A-Za-zÑñÁáÉéÍíÓóÚú]+))*$/,
 );
 
-// SignUp Elements
-// const inputFirstName = $("#first-name-signup");
-// const inputLastName = $("#last-name-signup");
-// const inputEmail = $("#email-signup");
-const inputPassword = $("#password-signup");
-// const btnSubmitSignUp = $("#btn-submit-signup");
-
-// SignIn Elements
-const inputEmailSignIn = $("#email-signin");
-const inputPasswordSignin = $("#password-signin");
-// const btnSubmitSignIn = $("#btn-submit-signin");
-
 // Panel
 const btnLogOut = $("#btn-logout");
 const userLogin = $("#user-login");
-
-// togglePassword - SignUp
-const showPassword = $("#show-password");
-const hidePassword = $("#hide-password");
-const togglePassword = $("#togglePassword");
-
-// togglePassword - SignIn
-const showPasswordSign = $("#show-passwordSign");
-const hidePasswordSign = $("#hide-passwordSign");
-const togglePasswordSign = $("#togglePasswordSign");
 
 const validateTogglePassword = (input, show, hide) => {
   if (input.getAttribute("type") === "password") {
@@ -430,20 +411,26 @@ const validateTogglePassword = (input, show, hide) => {
   }
 };
 
-if (togglePassword) {
-  togglePassword.addEventListener("click", () => {
-    validateTogglePassword(inputPassword, showPassword, hidePassword);
-  });
-}
+function hidrateTogglePassword() {
+  if (window.location.pathname === "/") {
+    $("#togglePassword").addEventListener("click", () => {
+      validateTogglePassword(
+        $("#password-signup"),
+        $("#show-password"),
+        $("#hide-password"),
+      );
+    });
+  }
 
-if (togglePasswordSign) {
-  togglePasswordSign.addEventListener("click", () => {
-    validateTogglePassword(
-      inputPasswordSignin,
-      showPasswordSign,
-      hidePasswordSign,
-    );
-  });
+  if (window.location.pathname === "/signin") {
+    $("#togglePasswordSign").addEventListener("click", () => {
+      validateTogglePassword(
+        $("#password-signin"),
+        $("#show-passwordSign"),
+        $("#hide-passwordSign"),
+      );
+    });
+  }
 }
 
 const validateForm = () => {
@@ -492,7 +479,6 @@ const validateForm = () => {
 };
 
 const sendForm = (e) => {
-  console.log("todogood");
   e.preventDefault();
 
   if (validateForm()) {
@@ -509,6 +495,7 @@ const sendForm = (e) => {
 
     localStorage.setItem("users", JSON.stringify(users));
     alert("Successful registration");
+    navigateTo("/signin");
     // Redirrecionar a /login
   } else {
     alert("Registration invalid");
@@ -516,32 +503,27 @@ const sendForm = (e) => {
 };
 
 const signin = (e) => {
-  console.log("sign todo good");
   e.preventDefault();
   let users = JSON.parse(localStorage.getItem("users")) || [];
-  try {
-    let validUser = users.find(
-      (user) =>
-        user.email === inputEmailSignIn.value &&
-        user.password === inputPasswordSignin.value,
-    );
-  } catch {
-    alert("userinvalid");
-  }
+
+  let validUser = users.find(
+    (user) =>
+      user.email === $("#email-signin").value &&
+      user.password === $("#password-signin").value,
+  );
 
   if (!validUser) {
     return alert("User invalid");
   }
 
-  let login = JSON.parse(localStorage.getItem("login")) || [];
-  login.push(validUser);
-  localStorage.setItem("login", JSON.stringify(login));
+  localStorage.setItem("login", JSON.stringify(validUser));
   alert(`Welcome ${validUser.firstname}`);
+  navigateTo("/panelui");
+  hidrateLogin();
 };
 
 document.addEventListener("click", (e) => {
   let target = e.target;
-  console.log(target);
 
   if (target.matches("#btn-submit-signup")) {
     sendForm(e);
@@ -585,16 +567,22 @@ document.addEventListener("input", (e) => {
   }
 });
 
-// document.addEventListener("click", (e) => {
-//   if (e.target.tagName === "A") {
-//     e.preventDefault();
-//     const href = e.target.getAttribute("href");
-//     navigateTo(href);
-//   }
-// });
+function cancelReLogin() {
+  const user = JSON.parse(localStorage.getItem("login"));
+  if (user) {
+    navigateTo("/panelui");
+  }
+}
 
-// let login = JSON.parse(localStorage.getItem("login"));
-// console.log(login);
-// if (login.length > 0) {
-//   userLogin.textContent = login[0].firstname;
-// }
+function hidrateLogin() {
+  const user = JSON.parse(localStorage.getItem("login")) || false;
+  if (!user) {
+    navigateTo("/signin");
+  }
+  $("#user-login").textContent = `${user.lastname}`;
+
+  $("#btn-logout").addEventListener("click", () => {
+    localStorage.removeItem("login");
+    navigateTo("/signin");
+  });
+}
