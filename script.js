@@ -351,10 +351,13 @@ window.addEventListener("popstate", () => {
 
   if (window.location.pathname === "/signin") {
     root.innerHTML = signInUI;
+    hidrateTogglePassword();
+    cancelReLogin();
   }
 
   if (window.location.pathname === "/panelui") {
     root.innerHTML = panelUI;
+    hidrateLogin();
   }
 });
 
