@@ -132,6 +132,7 @@ const signUpUI = `<div class="my-5">
                 stroke-linejoin="round"
               />
             </svg>
+
             <input
               id="password-signup"
               class="h-5 w-full flex-1 appearance-none bg-transparent text-sm opacity-60 outline-none placeholder:text-sm"
@@ -139,6 +140,7 @@ const signUpUI = `<div class="my-5">
               placeholder="Password"
               name="password"
             />
+
             <button id="togglePassword" type="button">
               <svg
                 id="hide-password"
